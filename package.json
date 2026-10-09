@@ -1,0 +1,17 @@
+{
+  "name": "json-to-arkts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Paste JSON, get ArkTS classes with fromJson/toJson for HarmonyOS. Runs in the browser.",
+  "type": "module",
+  "scripts": {
+    "start": "node tool/serve.js",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "ohos-typescript": "4.9.5-r10"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

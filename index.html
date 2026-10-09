@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JSON to ArkTS</title>
+    <meta name="description" content="Paste JSON, get ArkTS classes with fromJson and toJson for HarmonyOS. Runs in your browser; your JSON never leaves the page." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1114" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="JSON to ArkTS" />
+    <meta property="og:description" content="Paste JSON, get ArkTS classes with fromJson and toJson for HarmonyOS." />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="src/style.css" />
+    <script>
+      // Apply the saved theme before the first paint.
+      try {
+        const theme = JSON.parse(localStorage.getItem('json-to-arkts') || '{}').theme;
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+    <script type="module" src="src/app.js"></script>
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="currentColor" />
+          <path d="M12 9c-2 0-3 1-3 3v2c0 1-1 2-2 2 1 0 2 1 2 2v2c0 2 1 3 3 3M20 9c2 0 3 1 3 3v2c0 1 1 2 2 2-1 0-2 1-2 2v2c0 2-1 3-3 3" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div>
+          <h1>JSON to ArkTS</h1>
+          <p class="tagline">Paste JSON, get ArkTS classes with <code>fromJson</code> and <code>toJson</code> for HarmonyOS.</p>
+        </div>
+      </div>
+      <nav class="top-actions" aria-label="Site">
+        <a class="ghost" href="https://github.com/ahmetkadircicek/json-to-arkts" rel="noopener">GitHub</a>
+        <button type="button" id="theme" class="ghost icon" aria-label="Switch to dark theme">
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" /></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" /></svg>
+        </button>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <section class="panel input" aria-labelledby="json-title">
+        <div class="panel-head">
+          <h2 id="json-title"><label for="json">JSON</label></h2>
+          <div class="tools">
+            <button type="button" id="sample" class="ghost small">Sample</button>
+            <button type="button" id="format" class="ghost small">Format</button>
+            <button type="button" id="clear" class="ghost small">Clear</button>
+          </div>
+        </div>
+
+        <div class="editor" id="editor">
+          <div class="gutter" id="gutter" aria-hidden="true"></div>
+          <textarea id="json" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off" placeholder='Paste JSON here, for example {"id": 1, "name": "Ahmet"}' aria-describedby="json-error"></textarea>
+        </div>
+        <div class="error" id="json-error" role="alert" hidden>
+          <button type="button" class="error-where" id="error-where"></button>
+          <span id="error-message"></span>
+        </div>
+
+        <form class="options" id="options">
+          <div class="fields">
+            <label class="field">
+              <span>Class name</span>
+              <input id="className" type="text" value="Root" spellcheck="false" autocomplete="off" />
+            </label>
+            <label class="field">
+              <span>Missing and null fields</span>
+              <select id="nullStyle">
+                <option value="default">Default values (= '', 0, [])</option>
+                <option value="optional">Optional (name?: T)</option>
+                <option value="nullable">Nullable (T | null = null)</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>State management</span>
+              <select id="observed">
+                <option value="none">None</option>
+                <option value="v1">@Observed (V1)</option>
+                <option value="v2">@ObservedV2 with @Trace (V2, API 12+)</option>
+              </select>
+            </label>
+          </div>
+          <fieldset class="checks">
+            <legend class="visually-hidden">Code style</legend>
+            <label><input type="checkbox" id="privateFields" /> Private fields with get/set</label>
+            <label><input type="checkbox" id="camelCase" checked /> camelCase field names</label>
+            <label><input type="checkbox" id="exportClasses" checked /> Export classes</label>
+            <label><input type="checkbox" id="filePerClass" /> One file per class</label>
+          </fieldset>
+          <div class="generate-row">
+            <button type="submit" class="primary" id="generate">Generate ArkTS</button>
+            <span class="hint"><kbd id="mod-key">Ctrl</kbd> + <kbd>Enter</kbd></span>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel output" aria-labelledby="output-title">
+        <div class="panel-head">
+          <h2 id="output-title">ArkTS</h2>
+          <div class="tools">
+            <button type="button" id="copy" class="ghost small" disabled>Copy</button>
+            <button type="button" id="download" class="ghost small" disabled>Download</button>
+          </div>
+        </div>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Files" hidden></div>
+        <p class="stale" id="stale" hidden>The JSON or the options changed. Generate to update the code.</p>
+        <pre class="code" id="code-box" tabindex="0" aria-label="Generated ArkTS code"><code id="code"><span class="placeholder">Generated classes appear here.</span></code></pre>
+
+        <div class="notes">
+          <details id="warnings-box" hidden>
+            <summary>Hints <span class="count" id="warnings-count"></span></summary>
+            <ul id="warnings"></ul>
+          </details>
+          <details id="usage-box" open hidden>
+            <summary>Usage</summary>
+            <pre class="usage"><code id="usage"></code></pre>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Everything runs in your browser; your JSON never leaves this page.</p>
+    </footer>
+
+    <p class="visually-hidden" id="status" role="status" aria-live="polite"></p>
+  </body>
+</html>
