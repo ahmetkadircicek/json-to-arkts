@@ -1,0 +1,4 @@
+[
+  { "id": 1, "title": "Watch face", "author": { "name": "A", "links": [{ "rel": "self", "href": "/a" }] } },
+  { "id": 2, "title": "Health card", "author": { "name": "B", "links": [] }, "badge": "new" }
+]

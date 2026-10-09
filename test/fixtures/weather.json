@@ -1,0 +1,11 @@
+{
+  "coord": { "lon": 28.95, "lat": 41.01 },
+  "weather": [{ "id": 800, "main": "Clear", "description": "clear sky", "icon": "01d" }],
+  "main": { "temp": 18.4, "feels_like": 17.9, "humidity": 62 },
+  "wind": { "speed": 3.6, "deg": 40 },
+  "dt": 1760500000,
+  "sys": { "country": "TR", "sunrise": 1760475000, "sunset": 1760516000 },
+  "timezone": 10800,
+  "name": "Istanbul",
+  "cod": 200
+}

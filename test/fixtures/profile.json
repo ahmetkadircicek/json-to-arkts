@@ -1,0 +1,17 @@
+{
+  "id": 1024,
+  "user_name": "ahmet",
+  "is_verified": true,
+  "rating": 4.8,
+  "tags": ["harmonyos", "arkts"],
+  "address": {
+    "city": "Istanbul",
+    "zip_code": "34000",
+    "location": { "lat": 41.01, "lng": 28.97 }
+  },
+  "orders": [
+    { "order_id": "A-1", "total": 99.9, "items": [{ "sku": "W-42", "quantity": 1 }] },
+    { "order_id": "A-2", "total": 10, "items": [{ "sku": "B-7", "quantity": 3 }] }
+  ],
+  "scores": [[1, 2], [3, 4]]
+}
