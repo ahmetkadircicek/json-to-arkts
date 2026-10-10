@@ -24,6 +24,7 @@
     "url": "https://github.com/ahmetkadircicek/json-to-arkts/issues"
   },
   "author": "Ahmet Kadir Çiçek (https://github.com/ahmetkadircicek)",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "start": "node tool/serve.js",

@@ -150,3 +150,7 @@ npm test
 ## Credits
 
 Made by [Ahmet Kadir Çiçek](https://github.com/ahmetkadircicek).
+
+## License
+
+[MIT](LICENSE) © Ahmet Kadir Çiçek
