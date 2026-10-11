@@ -145,7 +145,7 @@ npm test
 
 ## Deploy
 
-`.github/workflows/pages.yml` runs the tests on every push and pull request. On `main` it then replaces the `gh-pages` branch with the site files (`index.html`, `src/`, `favicon.svg`, `og.png`, `sitemap.xml`), and GitHub Pages serves that branch.
+`.github/workflows/pages.yml` runs the tests on every push and pull request. On `main` it then replaces the `gh-pages` branch with the site files (`index.html`, `src/`, `favicon.svg`, `og.png`, `sitemap.xml` and the Google Search Console verification file), and GitHub Pages serves that branch.
 
 ## Credits
 
