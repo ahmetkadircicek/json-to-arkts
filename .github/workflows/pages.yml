@@ -38,7 +38,7 @@ jobs:
       - name: Collect the site
         run: |
           mkdir _site
-          cp index.html favicon.svg og.png sitemap.xml _site/
+          cp index.html favicon.svg og.png sitemap.xml google586eecc63045f435.html _site/
           cp -r src _site/src
           touch _site/.nojekyll
       - name: Publish to gh-pages
