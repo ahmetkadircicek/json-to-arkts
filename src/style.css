@@ -1,32 +1,32 @@
 :root {
-  --bg: #f6f7f9;
+  --bg: #f5f5f5;
   --surface: #ffffff;
-  --surface-2: #f1f3f6;
-  --border: #e2e5ea;
-  --border-strong: #cdd2da;
-  --text: #16181d;
-  --muted: #5b6472;
-  --accent: #0a59f7;
-  --accent-hover: #0848c9;
-  --accent-text: #ffffff;
-  --accent-soft: rgba(10, 89, 247, 0.1);
-  --danger: #c4243a;
-  --danger-soft: #fdecee;
-  --warn: #8a5300;
-  --warn-soft: #fff5dc;
-  --code-bg: #fbfbfc;
-  --line-number: #a2a9b4;
-  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --surface-2: #f2f2f2;
+  --border: #e5e5e5;
+  --border-strong: #cccccc;
+  --text: #111111;
+  --muted: #595959;
+  /* Huawei red. Buttons and the logo use it in both themes. */
+  --brand: #c7000b;
+  --brand-hover: #a50009;
+  --brand-text: #ffffff;
+  --accent: #c7000b;
+  --accent-soft: rgba(199, 0, 11, 0.08);
+  --danger: #c7000b;
+  --danger-soft: #fdeceb;
+  --code-bg: #fafafa;
+  --line-number: #a6a6a6;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 
-  --tok-keyword: #8e24aa;
-  --tok-type: #00796b;
-  --tok-class: #00796b;
-  --tok-string: #2e7d32;
-  --tok-number: #b45309;
-  --tok-literal: #b45309;
-  --tok-decorator: #c2185b;
-  --tok-function: #1565c0;
-  --tok-comment: #6b7280;
+  --tok-keyword: #c7000b;
+  --tok-decorator: #c7000b;
+  --tok-type: #111111;
+  --tok-class: #111111;
+  --tok-function: #111111;
+  --tok-string: #5e5e5e;
+  --tok-number: #8f0008;
+  --tok-literal: #8f0008;
+  --tok-comment: #767676;
 
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'HarmonyOS Sans', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, Consolas, 'Liberation Mono', monospace;
@@ -39,67 +39,59 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0f1114;
-    --surface: #171a1f;
-    --surface-2: #1f232a;
-    --border: #2a2f37;
-    --border-strong: #3a414c;
-    --text: #e8eaee;
-    --muted: #9aa3b1;
-    --accent: #5b95ff;
-    --accent-hover: #7aa9ff;
-    --accent-text: #06122b;
-    --accent-soft: rgba(91, 149, 255, 0.14);
-    --danger: #ff7a8a;
-    --danger-soft: rgba(255, 122, 138, 0.1);
-    --warn: #f5c062;
-    --warn-soft: rgba(245, 192, 98, 0.1);
-    --code-bg: #13161a;
-    --line-number: #5d6572;
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1f1f1f;
+    --border: #2b2b2b;
+    --border-strong: #404040;
+    --text: #f2f2f2;
+    --muted: #a6a6a6;
+    --accent: #ff5a5a;
+    --accent-soft: rgba(255, 90, 90, 0.12);
+    --danger: #ff6b6b;
+    --danger-soft: rgba(255, 90, 90, 0.1);
+    --code-bg: #0f0f0f;
+    --line-number: #5c5c5c;
     --shadow: none;
 
-    --tok-keyword: #d19bff;
-    --tok-type: #5ed3c3;
-    --tok-class: #5ed3c3;
-    --tok-string: #9cd68a;
-    --tok-number: #f5b25c;
-    --tok-literal: #f5b25c;
-    --tok-decorator: #ff8fb8;
-    --tok-function: #82b6ff;
-    --tok-comment: #8b93a1;
+    --tok-keyword: #ff5a5a;
+    --tok-decorator: #ff5a5a;
+    --tok-type: #ffffff;
+    --tok-class: #ffffff;
+    --tok-function: #f2f2f2;
+    --tok-string: #b3b3b3;
+    --tok-number: #ff8c8c;
+    --tok-literal: #ff8c8c;
+    --tok-comment: #8c8c8c;
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0f1114;
-  --surface: #171a1f;
-  --surface-2: #1f232a;
-  --border: #2a2f37;
-  --border-strong: #3a414c;
-  --text: #e8eaee;
-  --muted: #9aa3b1;
-  --accent: #5b95ff;
-  --accent-hover: #7aa9ff;
-  --accent-text: #06122b;
-  --accent-soft: rgba(91, 149, 255, 0.14);
-  --danger: #ff7a8a;
-  --danger-soft: rgba(255, 122, 138, 0.1);
-  --warn: #f5c062;
-  --warn-soft: rgba(245, 192, 98, 0.1);
-  --code-bg: #13161a;
-  --line-number: #5d6572;
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface-2: #1f1f1f;
+  --border: #2b2b2b;
+  --border-strong: #404040;
+  --text: #f2f2f2;
+  --muted: #a6a6a6;
+  --accent: #ff5a5a;
+  --accent-soft: rgba(255, 90, 90, 0.12);
+  --danger: #ff6b6b;
+  --danger-soft: rgba(255, 90, 90, 0.1);
+  --code-bg: #0f0f0f;
+  --line-number: #5c5c5c;
   --shadow: none;
 
-  --tok-keyword: #d19bff;
-  --tok-type: #5ed3c3;
-  --tok-class: #5ed3c3;
-  --tok-string: #9cd68a;
-  --tok-number: #f5b25c;
-  --tok-literal: #f5b25c;
-  --tok-decorator: #ff8fb8;
-  --tok-function: #82b6ff;
-  --tok-comment: #8b93a1;
+  --tok-keyword: #ff5a5a;
+  --tok-decorator: #ff5a5a;
+  --tok-type: #ffffff;
+  --tok-class: #ffffff;
+  --tok-function: #f2f2f2;
+  --tok-string: #b3b3b3;
+  --tok-number: #ff8c8c;
+  --tok-literal: #ff8c8c;
+  --tok-comment: #8c8c8c;
   color-scheme: dark;
 }
 
@@ -183,7 +175,7 @@ textarea {
   flex: none;
   width: 36px;
   height: 36px;
-  color: var(--accent);
+  color: var(--brand);
 }
 
 h1 {
@@ -228,13 +220,13 @@ h1 {
   min-height: 40px;
   padding: 0 18px;
   border: 0;
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--brand);
+  color: var(--brand-text);
   font-weight: 600;
 }
 
 .primary:hover {
-  background: var(--accent-hover);
+  background: var(--brand-hover);
 }
 
 .ghost {
@@ -286,6 +278,12 @@ h1 {
   color: var(--accent);
 }
 
+.ghost.github svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
 #theme .moon {
   display: none;
 }
@@ -310,8 +308,11 @@ h1 {
 
 /* Layout ------------------------------------------------------------------ */
 
-.workspace {
+main {
   flex: 1;
+}
+
+.workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
@@ -509,7 +510,7 @@ h2 {
   width: 16px;
   height: 16px;
   margin: 0;
-  accent-color: var(--accent);
+  accent-color: var(--brand);
 }
 
 .checks label:has(input:disabled) {
@@ -569,17 +570,18 @@ kbd {
 }
 
 .tab[aria-selected='true'] {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--brand);
   color: var(--text);
   font-weight: 600;
 }
 
 .stale {
   margin: 0;
-  padding: 8px 16px;
+  padding: 8px 16px 8px 13px;
   border-bottom: 1px solid var(--border);
-  background: var(--warn-soft);
-  color: var(--warn);
+  border-left: 3px solid var(--brand);
+  background: var(--surface-2);
+  color: var(--text);
   font-size: 13px;
 }
 
@@ -626,8 +628,8 @@ kbd {
 }
 
 .tok-keyword { color: var(--tok-keyword); }
-.tok-type { color: var(--tok-type); }
-.tok-class { color: var(--tok-class); }
+.tok-type { color: var(--tok-type); font-weight: 600; }
+.tok-class { color: var(--tok-class); font-weight: 600; }
 .tok-string { color: var(--tok-string); }
 .tok-number { color: var(--tok-number); }
 .tok-literal { color: var(--tok-literal); }
@@ -662,8 +664,8 @@ kbd {
   margin-left: 4px;
   padding: 0 6px;
   border-radius: 10px;
-  background: var(--warn-soft);
-  color: var(--warn);
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 12px;
   text-align: center;
 }
@@ -688,6 +690,99 @@ kbd {
   overflow-x: auto;
   font-size: 12.5px;
   line-height: 19px;
+}
+
+/* About and FAQ ----------------------------------------------------------- */
+
+.about {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 56px 24px 8px;
+}
+
+.about > h2 {
+  max-width: 760px;
+  margin: 0 0 12px;
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.88em;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--brand-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.steps h3,
+.faq h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.steps p,
+.faq p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.faq-title {
+  margin: 48px 0 16px;
+  font-size: 20px;
+}
+
+.faq {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
+}
+
+.faq-item {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 /* Footer -------------------------------------------------------------------- */
@@ -719,6 +814,11 @@ kbd {
 
 @media (max-width: 900px) {
   .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .steps,
+  .faq {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -755,6 +855,19 @@ kbd {
 
   .workspace {
     padding: 0 16px;
+  }
+
+  .about {
+    padding: 40px 16px 0;
+  }
+
+  .ghost.github {
+    width: 36px;
+    padding: 0;
+  }
+
+  .ghost.github span {
+    display: none;
   }
 
   .foot {

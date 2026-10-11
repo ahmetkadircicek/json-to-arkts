@@ -25,26 +25,30 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  # GitHub Pages serves the gh-pages branch. Each deploy replaces it with one
+  # commit holding only the site files.
   deploy:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Collect the site
         run: |
           mkdir _site
-          cp index.html favicon.svg _site/
+          cp index.html favicon.svg og.png sitemap.xml _site/
           cp -r src _site/src
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          touch _site/.nojekyll
+      - name: Publish to gh-pages
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publish ${GITHUB_SHA::7}"
+          git push --force "https://x-access-token:$TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages

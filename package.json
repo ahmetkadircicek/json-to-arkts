@@ -2,7 +2,28 @@
   "name": "json-to-arkts",
   "version": "1.0.0",
   "private": true,
-  "description": "Paste JSON, get ArkTS classes with fromJson/toJson for HarmonyOS. Runs in the browser.",
+  "description": "Convert JSON to ArkTS classes for HarmonyOS and OpenHarmony: typed .ets models with fromJson and toJson. Runs in the browser.",
+  "keywords": [
+    "json-to-arkts",
+    "arkts",
+    "harmonyos",
+    "harmonyos-next",
+    "openharmony",
+    "ets",
+    "deveco-studio",
+    "json",
+    "code-generator",
+    "model-generator"
+  ],
+  "homepage": "https://ahmetkadircicek.github.io/json-to-arkts/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmetkadircicek/json-to-arkts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmetkadircicek/json-to-arkts/issues"
+  },
+  "author": "Ahmet Kadir Çiçek (https://github.com/ahmetkadircicek)",
   "type": "module",
   "scripts": {
     "start": "node tool/serve.js",

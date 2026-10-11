@@ -3,13 +3,119 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JSON to ArkTS</title>
-    <meta name="description" content="Paste JSON, get ArkTS classes with fromJson and toJson for HarmonyOS. Runs in your browser; your JSON never leaves the page." />
+    <title>JSON to ArkTS Converter | HarmonyOS Model Class Generator</title>
+    <meta name="description" content="Convert JSON to ArkTS classes online. Generates HarmonyOS .ets model classes with fromJson and toJson, @Observed and @ObservedV2 support, ready for ArkTS strict mode. Free, runs in your browser." />
+    <link rel="canonical" href="https://ahmetkadircicek.github.io/json-to-arkts/" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Ahmet Kadir Çiçek" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f1114" media="(prefers-color-scheme: dark)" />
-    <meta property="og:title" content="JSON to ArkTS" />
-    <meta property="og:description" content="Paste JSON, get ArkTS classes with fromJson and toJson for HarmonyOS." />
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="JSON to ArkTS" />
+    <meta property="og:title" content="JSON to ArkTS Converter" />
+    <meta property="og:description" content="Convert JSON to HarmonyOS ArkTS classes with fromJson and toJson. Free, runs in your browser." />
+    <meta property="og:url" content="https://ahmetkadircicek.github.io/json-to-arkts/" />
+    <meta property="og:image" content="https://ahmetkadircicek.github.io/json-to-arkts/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JSON to ArkTS: convert JSON to HarmonyOS ArkTS classes" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSON to ArkTS Converter" />
+    <meta name="twitter:description" content="Convert JSON to HarmonyOS ArkTS classes with fromJson and toJson. Free, runs in your browser." />
+    <meta name="twitter:image" content="https://ahmetkadircicek.github.io/json-to-arkts/og.png" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "JSON to ArkTS",
+      "alternateName": "JSON to ArkTS Converter",
+      "url": "https://ahmetkadircicek.github.io/json-to-arkts/",
+      "description": "Convert JSON to ArkTS classes online. Generates HarmonyOS .ets model classes with fromJson and toJson, @Observed and @ObservedV2 support, ready for ArkTS strict mode. Free, runs in your browser.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any (web browser)",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Ahmet Kadir Çiçek",
+        "url": "https://github.com/ahmetkadircicek"
+      },
+      "codeRepository": "https://github.com/ahmetkadircicek/json-to-arkts",
+      "image": "https://ahmetkadircicek.github.io/json-to-arkts/og.png",
+      "keywords": "JSON to ArkTS, ArkTS, HarmonyOS, HarmonyOS NEXT, OpenHarmony, ets, DevEco Studio, fromJson, toJson, model class generator"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I parse JSON in ArkTS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cast the parsed value to Record<string, Object> and pass it to the generated fromJson: const user: User = User.fromJson(JSON.parse(text) as Record<string, Object>). To turn a model back into text, call JSON.stringify(user.toJson())."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not just cast JSON.parse to a class?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A cast does not create an instance. The object has no methods, no default values and no @Observed proxy, so the UI does not react to its changes. fromJson builds real class instances, nested objects and lists included."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the generated code pass ArkTS strict mode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. It uses no any or unknown and types every object literal and lambda parameter. Every combination of options is tested with the ArkTS linter of ohos-typescript, the compiler DevEco Studio builds ArkTS with."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I use @Observed or @ObservedV2?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use @Observed with @ObjectLink in state management V1. For state management V2 (API 12 and later), choose @ObservedV2: every field gets @Trace, so changes to nested objects update the UI."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to null and missing fields?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With default values, a missing or null key keeps the field's default: 0, an empty string, false or an empty list. Optional fields read as undefined and nullable fields as null. toJson leaves undefined and null fields out."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON sent anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The converter is plain JavaScript that runs in your browser, and your last JSON and options are kept only in your own browser. The page counts visits anonymously with Cloudflare Web Analytics, without cookies: the page, the referring site, the country and the browser type, never your JSON or code. Browsers with Do Not Track or Global Privacy Control are not counted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work with OpenHarmony and HarmonyOS NEXT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. HarmonyOS NEXT, HarmonyOS and OpenHarmony apps all use ArkTS, so the classes work in any of them."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="src/style.css" />
     <script>
@@ -26,15 +132,18 @@
       <div class="brand">
         <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
           <rect width="32" height="32" rx="8" fill="currentColor" />
-          <path d="M12 9c-2 0-3 1-3 3v2c0 1-1 2-2 2 1 0 2 1 2 2v2c0 2 1 3 3 3M20 9c2 0 3 1 3 3v2c0 1 1 2 2 2-1 0-2 1-2 2v2c0 2-1 3-3 3" fill="none" stroke="var(--accent-text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M12 9c-2 0-3 1-3 3v2c0 1-1 2-2 2 1 0 2 1 2 2v2c0 2 1 3 3 3M20 9c2 0 3 1 3 3v2c0 1 1 2 2 2-1 0-2 1-2 2v2c0 2-1 3-3 3" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <div>
           <h1>JSON to ArkTS</h1>
-          <p class="tagline">Paste JSON, get ArkTS classes with <code>fromJson</code> and <code>toJson</code> for HarmonyOS.</p>
+          <p class="tagline">Convert JSON to HarmonyOS ArkTS classes with <code>fromJson</code> and <code>toJson</code>.</p>
         </div>
       </div>
       <nav class="top-actions" aria-label="Site">
-        <a class="ghost" href="https://github.com/ahmetkadircicek/json-to-arkts" rel="noopener">GitHub</a>
+        <a class="ghost github" href="https://github.com/ahmetkadircicek/json-to-arkts" rel="noopener">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" /></svg>
+          <span>GitHub</span>
+        </a>
         <button type="button" id="theme" class="ghost icon" aria-label="Switch to dark theme">
           <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" /></svg>
           <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" /></svg>
@@ -42,7 +151,8 @@
       </nav>
     </header>
 
-    <main class="workspace">
+    <main>
+      <div class="workspace">
       <section class="panel input" aria-labelledby="json-title">
         <div class="panel-head">
           <h2 id="json-title"><label for="json">JSON</label></h2>
@@ -122,10 +232,67 @@
           </details>
         </div>
       </section>
+      </div>
+
+      <section class="about" aria-labelledby="about-title">
+        <h2 id="about-title">Convert JSON to ArkTS classes for HarmonyOS</h2>
+        <p class="lead">
+          ArkTS, the language of HarmonyOS and OpenHarmony apps, does not allow <code>any</code> or untyped object literals, so every
+          JSON response needs a typed model class. Paste a sample response and get ready-to-use <code>.ets</code> classes with
+          <code>fromJson</code> and <code>toJson</code>, written to pass the ArkTS linter in DevEco Studio.
+        </p>
+
+        <ol class="steps">
+          <li>
+            <h3>Paste JSON</h3>
+            <p>A sample API response, or a list of objects. Format tidies it up, and an error shows its line and column.</p>
+          </li>
+          <li>
+            <h3>Pick a style</h3>
+            <p>Default values, optional or nullable fields, private fields with getters and setters, <code>@Observed</code> or <code>@ObservedV2</code> with <code>@Trace</code>.</p>
+          </li>
+          <li>
+            <h3>Add it to your project</h3>
+            <p>Copy or download the <code>.ets</code> file, or a <code>.zip</code> with one file per class, into a folder such as <code>entry/src/main/ets/model</code>.</p>
+          </li>
+        </ol>
+
+        <h2 class="faq-title">Frequently asked questions</h2>
+        <div class="faq">
+          <div class="faq-item">
+            <h3>How do I parse JSON in ArkTS?</h3>
+            <p>Cast the parsed value to <code>Record&lt;string, Object&gt;</code> and pass it to the generated <code>fromJson</code>: <code>User.fromJson(JSON.parse(text) as Record&lt;string, Object&gt;)</code>. To turn a model back into text, call <code>JSON.stringify(user.toJson())</code>.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Why not just cast JSON.parse to a class?</h3>
+            <p>A cast does not create an instance. The object has no methods, no default values and no <code>@Observed</code> proxy, so the UI does not react to its changes. <code>fromJson</code> builds real class instances, nested objects and lists included.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Does the generated code pass ArkTS strict mode?</h3>
+            <p>Yes. It uses no <code>any</code> or <code>unknown</code> and types every object literal and lambda parameter. Every combination of options is tested with the ArkTS linter of <code>ohos-typescript</code>, the compiler DevEco Studio builds ArkTS with.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Should I use @Observed or @ObservedV2?</h3>
+            <p>Use <code>@Observed</code> with <code>@ObjectLink</code> in state management V1. For state management V2 (API 12 and later), choose <code>@ObservedV2</code>: every field gets <code>@Trace</code>, so changes to nested objects update the UI.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What happens to null and missing fields?</h3>
+            <p>With default values, a missing or null key keeps the field's default: <code>0</code>, <code>''</code>, <code>false</code> or <code>[]</code>. Optional fields read as <code>undefined</code> and nullable fields as <code>null</code>. <code>toJson</code> leaves undefined and null fields out.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Is my JSON sent anywhere?</h3>
+            <p>No. The converter is plain JavaScript that runs in your browser, and your last JSON and options are kept only in your own browser. The page counts visits anonymously with <a href="https://www.cloudflare.com/web-analytics/" rel="noopener">Cloudflare Web Analytics</a>, without cookies: the page, the referring site, the country and the browser type, never your JSON or code. Browsers with Do Not Track or Global Privacy Control are not counted.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Does it work with OpenHarmony and HarmonyOS NEXT?</h3>
+            <p>Yes. HarmonyOS NEXT, HarmonyOS and OpenHarmony apps all use ArkTS, so the classes work in any of them.</p>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="foot">
-      <p>Everything runs in your browser; your JSON never leaves this page.</p>
+      <p>Everything runs in your browser; your JSON never leaves this page. Visits are counted anonymously, without cookies. Made by <a href="https://github.com/ahmetkadircicek" rel="noopener">Ahmet Kadir Çiçek</a>.</p>
     </footer>
 
     <p class="visually-hidden" id="status" role="status" aria-live="polite"></p>

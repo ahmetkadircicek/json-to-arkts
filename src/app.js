@@ -1,3 +1,4 @@
+import { startAnalytics } from './analytics.js';
 import { ConvertError, convertJson, DEFAULT_OPTIONS } from './converter.js';
 import { highlight, highlightLines, escapeHtml } from './highlight.js';
 import { formatJson, JsonParseError, parseJson } from './json-parser.js';
@@ -432,6 +433,7 @@ function start() {
   prefersDark.addEventListener('change', syncThemeButton);
 
   if (el.json.value.trim()) generate();
+  startAnalytics();
 }
 
 start();
