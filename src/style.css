@@ -278,6 +278,11 @@ h1 {
   color: var(--accent);
 }
 
+.ghost.github {
+  border-color: var(--border);
+  background: var(--surface);
+}
+
 .ghost.github svg {
   width: 18px;
   height: 18px;
@@ -539,6 +544,70 @@ kbd {
 }
 
 /* Output ------------------------------------------------------------------- */
+
+.star-prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--accent-soft);
+}
+
+.star-prompt[hidden] {
+  display: none;
+}
+
+.star-prompt p {
+  flex: 1;
+  margin: 0;
+  font-size: 13px;
+}
+
+.star-cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-small);
+  background: var(--brand);
+  color: var(--brand-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.star-cta:hover {
+  background: var(--brand-hover);
+}
+
+.star-cta svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.star-close {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.star-close:hover {
+  background: var(--surface);
+  color: var(--text);
+}
 
 .tabs {
   display: flex;
@@ -867,7 +936,12 @@ kbd {
   }
 
   .ghost.github span {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .foot {
@@ -892,6 +966,14 @@ kbd {
 
   .hint {
     display: none;
+  }
+
+  .star-prompt {
+    flex-wrap: wrap;
+  }
+
+  .star-prompt p {
+    flex-basis: calc(100% - 42px);
   }
 
   .code .line::before {
