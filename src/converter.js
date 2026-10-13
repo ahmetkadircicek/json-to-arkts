@@ -17,6 +17,8 @@ import {
 
 export const DEFAULT_OPTIONS = Object.freeze({
   className: 'Root',
+  /** 'class' (fromJson and toJson) or 'interface' (types only, used as JSON.parse(text) as Root). */
+  output: 'class',
   /** 'default' (name: string = ''), 'optional' (name?: string) or 'nullable' (name: string | null = null). */
   nullStyle: 'default',
   /** private _name with get name() and set name(). */
@@ -69,8 +71,15 @@ export function convertTree(root, options = {}) {
   }
 
   const rootName = rootClassName(opts.className, notes);
-  const classes = new ClassBuilder(notes, opts.camelCase).build(shape, rootName, rootIsList ? '$[]' : '$');
+  const classes = new ClassBuilder(notes, opts.camelCase, opts.output === 'interface').build(shape, rootName, rootIsList ? '$[]' : '$');
   const writer = new Writer(opts);
+
+  if (opts.output === 'interface') {
+    notes.list.unshift({
+      path: '$',
+      message: 'interfaces are checked when you compile, not when the app runs: a key missing from the JSON is undefined at run time, whatever the type says. Use class output for default values and checks',
+    });
+  }
 
   let files;
   if (opts.filePerClass) {
@@ -92,8 +101,15 @@ export function normalizeOptions(options) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   if (!['default', 'optional', 'nullable'].includes(opts.nullStyle)) opts.nullStyle = 'default';
   if (!['none', 'v1', 'v2'].includes(opts.observed)) opts.observed = 'none';
+  if (!['class', 'interface'].includes(opts.output)) opts.output = 'class';
   for (const key of ['privateFields', 'camelCase', 'exportClasses', 'filePerClass']) opts[key] = Boolean(opts[key]);
   if (opts.filePerClass) opts.exportClasses = true;
+  if (opts.output === 'interface') {
+    // An interface has no methods, defaults or decorators, and its fields are the JSON keys.
+    opts.observed = 'none';
+    opts.privateFields = false;
+    opts.camelCase = false;
+  }
   return opts;
 }
 
@@ -204,9 +220,10 @@ function rootClassName(input, notes) {
 }
 
 class ClassBuilder {
-  constructor(notes, camelCase) {
+  constructor(notes, camelCase, asInterface) {
     this.notes = notes;
     this.camelCase = camelCase;
+    this.asInterface = asInterface;
     this.classes = [];
     this.byName = new Map();
   }
@@ -281,13 +298,15 @@ class ClassBuilder {
     let name = this.camelCase ? toCamelCase(key) : toIdentifierChars(key);
     if (!name) name = 'field';
     if (!isIdentifier(name)) name = `_${name}`;
-    if (RESERVED_MEMBERS.has(name)) name = `${name}Value`;
+    if (RESERVED_MEMBERS.has(name) && !this.asInterface) name = `${name}Value`;
     if (used.has(name)) {
       let n = 2;
       while (used.has(`${name}${n}`)) n++;
       name = `${name}${n}`;
     }
-    if (name !== key && !(this.camelCase && toCamelCase(key) === name)) {
+    if (this.asInterface && name !== key) {
+      this.notes.add(path, `cannot be an interface field as written, so ${className} calls it ${name}, which does not match the JSON key; use class output for this key`);
+    } else if (name !== key && !(this.camelCase && toCamelCase(key) === name)) {
       this.notes.add(path, `is named ${name} in ${className}`);
     }
     return name;
@@ -404,7 +423,21 @@ class Writer {
     return [`if (${value} !== ${nullStyle === 'optional' ? 'undefined' : 'null'}) {`, `  ${assign}`, '}'];
   }
 
+  interfaceCode(cls) {
+    const { nullStyle } = this.opts;
+    const lines = [`${this.opts.exportClasses ? 'export ' : ''}interface ${cls.name} {`];
+    for (const field of cls.fields) {
+      const name = typeName(field.type);
+      if (nullStyle === 'optional') lines.push(`  ${field.name}?: ${name};`);
+      else if (nullStyle === 'nullable' || field.type.kind === 'any') lines.push(`  ${field.name}: ${name} | null;`);
+      else lines.push(`  ${field.name}: ${name};`);
+    }
+    lines.push('}');
+    return lines.join('\n');
+  }
+
   classCode(cls) {
+    if (this.opts.output === 'interface') return this.interfaceCode(cls);
     const { opts } = this;
     const body = [];
     for (const field of cls.fields) body.push(this.declaration(field));
@@ -474,6 +507,28 @@ function toJsonValue(type, value) {
 function usage(rootName, rootIsList, opts) {
   const lines = [];
   if (opts.filePerClass) lines.push(`import { ${rootName} } from './${rootName}';`, '');
+  if (opts.output === 'interface') {
+    if (rootIsList) {
+      lines.push(
+        '// JSON text to a list',
+        `const list: ${rootName}[] = JSON.parse(text) as ${rootName}[];`,
+        '',
+        '// List to JSON text',
+        'const output: string = JSON.stringify(list);',
+      );
+    } else {
+      let variable = lowerFirst(rootName);
+      if (KEYWORDS.has(variable) || variable === 'text' || variable === 'output' || variable === rootName) variable = 'model';
+      lines.push(
+        '// JSON text to an object',
+        `const ${variable}: ${rootName} = JSON.parse(text) as ${rootName};`,
+        '',
+        '// Object to JSON text',
+        `const output: string = JSON.stringify(${variable});`,
+      );
+    }
+    return lines.join('\n');
+  }
   if (rootIsList) {
     lines.push(
       '// JSON text to models',

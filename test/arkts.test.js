@@ -27,6 +27,15 @@ function* combinations() {
             }
 }
 
+function* interfaceCombinations() {
+  for (const nullStyle of ['default', 'optional', 'nullable'])
+    for (const exportClasses of [true, false])
+      for (const filePerClass of [false, true]) {
+        if (filePerClass && !exportClasses) continue;
+        yield { output: 'interface', nullStyle, exportClasses, filePerClass };
+      }
+}
+
 const label = (options) =>
   Object.entries(options)
     .map(([key, value]) => `${key}-${value}`)
@@ -58,7 +67,7 @@ test('the checker reports ArkTS errors (control)', () => {
 test('every fixture with every option combination passes the ArkTS checks', () => {
   const projects = [];
   for (const name of FIXTURES) {
-    for (const options of combinations()) {
+    for (const options of [...combinations(), ...interfaceCombinations()]) {
       const result = convertJson(fixture(name), options);
       const files = result.files.map((file) => ({ ...file }));
       if (options.exportClasses) {

@@ -297,3 +297,50 @@ test('name helpers', () => {
   };
   for (const [plural, singular] of Object.entries(plurals)) assert.equal(singularize(plural), singular, plural);
 });
+
+test('interface output: types only, fields are the JSON keys', () => {
+  const result = convertJson(JSON.stringify({ id: 1, user_name: 'a', tags: ['x'], address: { city: 'c' }, orders: [{ total: 1.5 }], note: null }), {
+    output: 'interface',
+    camelCase: true,
+    observed: 'v2',
+    privateFields: true,
+  });
+  assert.equal(
+    result.files[0].content,
+    `export interface Root {
+  id: number;
+  user_name: string;
+  tags: string[];
+  address: Address;
+  orders: Order[];
+  note: Object | null;
+}
+
+export interface Address {
+  city: string;
+}
+
+export interface Order {
+  total: number;
+}
+`,
+  );
+  assert.match(result.usage, /const root: Root = JSON\.parse\(text\) as Root;/);
+  assert.match(result.warnings[0].message, /checked when you compile/);
+
+  const optional = convertJson('{"a": 1, "b": {"c": "x"}}', { output: 'interface', nullStyle: 'optional', exportClasses: false }).files[0].content;
+  assert.match(optional, /^interface Root \{\n {2}a\?: number;\n {2}b\?: B;\n\}/);
+  const nullable = convertJson('{"a": 1}', { output: 'interface', nullStyle: 'nullable' }).files[0].content;
+  assert.match(nullable, /a: number \| null;/);
+});
+
+test('interface output: per file imports, list usage and keys that cannot be fields', () => {
+  const files = convertJson(fixture('profile.json'), { output: 'interface', filePerClass: true }).files;
+  assert.ok(files[0].content.startsWith("import { Address } from './Address';\nimport { Order } from './Order';\n\nexport interface Root {"));
+  const list = convertJson(fixture('list.json'), { output: 'interface', className: 'Post' });
+  assert.match(list.usage, /const list: Post\[\] = JSON\.parse\(text\) as Post\[\];/);
+  const odd = convertJson('{"first-name": "a", "constructor": 1}', { output: 'interface' });
+  assert.match(odd.files[0].content, / {2}first_name: string;/);
+  assert.match(odd.files[0].content, / {2}constructor: number;/);
+  assert.ok(odd.warnings.some((w) => /cannot be an interface field/.test(w.message)));
+});

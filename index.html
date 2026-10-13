@@ -179,6 +179,13 @@
               <input id="className" type="text" value="Root" spellcheck="false" autocomplete="off" />
             </label>
             <label class="field">
+              <span>Output</span>
+              <select id="output">
+                <option value="class">Class with fromJson and toJson</option>
+                <option value="interface">Interface (JSON.parse as)</option>
+              </select>
+            </label>
+            <label class="field">
               <span>Missing and null fields</span>
               <select id="nullStyle">
                 <option value="default">Default values (= '', 0, [])</option>
