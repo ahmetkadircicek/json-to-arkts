@@ -142,7 +142,7 @@
       <nav class="top-actions" aria-label="Site">
         <a class="ghost github" href="https://github.com/ahmetkadircicek/json-to-arkts" rel="noopener">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" /></svg>
-          <span>GitHub</span>
+          <span>Star on GitHub</span>
         </a>
         <button type="button" id="theme" class="ghost icon" aria-label="Switch to dark theme">
           <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" /></svg>
@@ -216,6 +216,11 @@
             <button type="button" id="copy" class="ghost small" disabled>Copy</button>
             <button type="button" id="download" class="ghost small" disabled>Download</button>
           </div>
+        </div>
+        <div class="star-prompt" id="star-prompt" hidden>
+          <p>Saved you some typing? A star on GitHub helps other HarmonyOS developers find this tool.</p>
+          <a class="star-cta" id="star-cta" href="https://github.com/ahmetkadircicek/json-to-arkts" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 .75l2.2 4.46 4.92.72-3.56 3.47.84 4.9L8 12.0l-4.4 2.31.84-4.9L.88 5.93l4.92-.72L8 .75Z" /></svg><span>Star on GitHub</span></a>
+          <button type="button" class="star-close" id="star-close" aria-label="Hide this message">&times;</button>
         </div>
         <div class="tabs" id="tabs" role="tablist" aria-label="Files" hidden></div>
         <p class="stale" id="stale" hidden>The JSON or the options changed. Generate to update the code.</p>

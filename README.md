@@ -1,10 +1,14 @@
 # JSON to ArkTS
 
+**English** | [简体中文](README.zh-CN.md)
+
 **Convert JSON to ArkTS classes for HarmonyOS, HarmonyOS NEXT and OpenHarmony.** Paste a JSON response and get typed `.ets` model classes with `fromJson()` and `toJson()` that pass ArkTS strict mode in DevEco Studio. Free, online, and it runs entirely in your browser.
 
 ### [Open JSON to ArkTS →](https://ahmetkadircicek.github.io/json-to-arkts/)
 
-![JSON to ArkTS converter: JSON on the left, generated ArkTS classes on the right](docs/screenshot.png)
+![JSON to ArkTS: paste JSON, generate ArkTS classes, switch to @ObservedV2 and copy the code](docs/demo.gif)
+
+If JSON to ArkTS saves you time, please give it a ⭐. It helps other HarmonyOS developers find it.
 
 ArkTS does not allow `any`, `unknown` or untyped object literals, so every JSON response a HarmonyOS app reads needs a typed model class. Writing those classes by hand is slow and easy to get wrong. JSON to ArkTS writes them for you, nested objects and lists included.
 

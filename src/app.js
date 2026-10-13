@@ -62,6 +62,7 @@ const el = {
   usage: $('usage'),
   status: $('status'),
   theme: $('theme'),
+  starPrompt: $('star-prompt'),
 };
 
 let result = null;
@@ -317,6 +318,7 @@ async function copyCode() {
   }
   flash(el.copy, 'Copied');
   announce(`${name} copied to the clipboard`);
+  offerStar();
 }
 
 function downloadCode() {
@@ -338,6 +340,7 @@ function downloadCode() {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
   announce(`${name} downloaded`);
+  offerStar();
 }
 
 function flash(button, text) {
@@ -357,6 +360,30 @@ function announce(text) {
   requestAnimationFrame(() => {
     el.status.textContent = text;
   });
+}
+
+// --- Star prompt -------------------------------------------------------------------
+// After a copy or download, once the tool has been useful, a small note asks for a
+// star on GitHub. Closing it, or following its link, hides it for good.
+
+const STAR_KEY = `${STORAGE_KEY}:star`;
+
+function offerStar() {
+  try {
+    if (localStorage.getItem(STAR_KEY)) return;
+  } catch {
+    // Storage blocked: show the note; it just will not be remembered.
+  }
+  el.starPrompt.hidden = false;
+}
+
+function retireStar(reason) {
+  el.starPrompt.hidden = true;
+  try {
+    localStorage.setItem(STAR_KEY, reason);
+  } catch {
+    // Storage blocked: the note may show again next time.
+  }
 }
 
 // --- Theme -------------------------------------------------------------------------
@@ -430,6 +457,8 @@ function start() {
   el.copy.addEventListener('click', copyCode);
   el.download.addEventListener('click', downloadCode);
   el.theme.addEventListener('click', toggleTheme);
+  $('star-cta').addEventListener('click', () => retireStar('starred'));
+  $('star-close').addEventListener('click', () => retireStar('dismissed'));
   prefersDark.addEventListener('change', syncThemeButton);
 
   if (el.json.value.trim()) generate();
