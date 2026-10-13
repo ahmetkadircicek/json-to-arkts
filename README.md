@@ -14,7 +14,7 @@ ArkTS does not allow `any`, `unknown` or untyped object literals, so every JSON 
 
 ## Features
 
-- **ArkTS model classes** with a `static fromJson()` and a `toJson()`, for nested objects and lists of any depth.
+- **ArkTS model classes** with a `static fromJson()` and a `toJson()`, for nested objects and lists of any depth. Or plain **interfaces** if you only need types (`JSON.parse(text) as Root`).
 - **Passes ArkTS strict mode**: no `any` or `unknown`, every object literal typed as `Record<string, Object>`, typed lambda parameters. Checked against the ArkTS linter for every combination of options.
 - **State management**: `@Observed` (V1) or `@ObservedV2` with `@Trace` (V2, API 12+).
 - **Null handling**: default values, optional fields (`name?: string`) or nullable fields (`name: string | null`).
@@ -91,6 +91,7 @@ const list: Root[] = (JSON.parse(text) as Record<string, Object>[])
 | Option | What it does |
 | --- | --- |
 | Class name | Name of the top-level class. |
+| Output | **Class**: classes with `fromJson` and `toJson`. **Interface**: `export interface` types only, used as `JSON.parse(text) as Root`. Interfaces have no defaults, decorators or methods, and their fields are the JSON keys, so state management, private fields and camelCase are switched off. |
 | Missing and null fields | **Default values**: `name: string = ''`; a missing or null key keeps the default. **Optional**: `name?: string`, read as `undefined`. **Nullable**: `name: string \| null = null`, read as `null`. `toJson` leaves out `undefined` and `null` fields. |
 | State management | **@Observed** (V1) on every class, or **@ObservedV2** with **@Trace** on every field (V2, API 12+). |
 | Private fields with get/set | `private _name` with `get name()` and `set name()`. |
@@ -115,7 +116,10 @@ Cast the parsed value to `Record<string, Object>` and pass it to the generated `
 A cast does not create an instance. The object has no methods, no default values and no `@Observed` proxy, so the UI does not react to its changes. `fromJson` builds real class instances, nested objects and lists included.
 
 **Does the generated code pass ArkTS strict mode?**
-Yes. `npm test` checks four sample files with all 108 option combinations against [`ohos-typescript`](https://www.npmjs.com/package/ohos-typescript), the TypeScript fork DevEco Studio builds ArkTS with, including its ArkTS linter. It also runs the classes to check that `toJson(fromJson(json))` gives the JSON back.
+Yes. `npm test` checks four sample files with all 120 option combinations (108 for classes, 12 for interfaces) against [`ohos-typescript`](https://www.npmjs.com/package/ohos-typescript), the TypeScript fork DevEco Studio builds ArkTS with, including its ArkTS linter. It also runs the classes to check that `toJson(fromJson(json))` gives the JSON back.
+
+**Class or interface?**
+Use an interface when you only read data that always has every field. Use a class when you need defaults for missing keys, `@Observed`/`@ObservedV2` state, renamed fields or a `toJson` for sending data back: an interface is only checked at compile time, so a missing key is `undefined` at run time.
 
 **`@Observed` or `@ObservedV2`?**
 Use `@Observed` with `@ObjectLink` in state management V1. For V2 (API 12 and later), choose `@ObservedV2`: every field gets `@Trace`, so changes to nested objects update the UI.

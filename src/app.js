@@ -44,6 +44,7 @@ const el = {
   form: $('options'),
   className: $('className'),
   nullStyle: $('nullStyle'),
+  output: $('output'),
   observed: $('observed'),
   privateFields: $('privateFields'),
   camelCase: $('camelCase'),
@@ -101,6 +102,7 @@ function readOptions() {
   return {
     className: el.className.value,
     nullStyle: el.nullStyle.value,
+    output: el.output.value,
     observed: el.observed.value,
     privateFields: el.privateFields.checked,
     camelCase: el.camelCase.checked,
@@ -113,6 +115,7 @@ function writeOptions(options) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   el.className.value = typeof opts.className === 'string' ? opts.className : DEFAULT_OPTIONS.className;
   setSelect(el.nullStyle, opts.nullStyle);
+  setSelect(el.output, opts.output);
   setSelect(el.observed, opts.observed);
   el.privateFields.checked = Boolean(opts.privateFields);
   el.camelCase.checked = Boolean(opts.camelCase);
@@ -120,10 +123,20 @@ function writeOptions(options) {
   el.exportClasses.checked = exportChoice;
   el.filePerClass.checked = Boolean(opts.filePerClass);
   syncExportCheckbox();
+  syncOutput();
 }
 
 function setSelect(select, value) {
   if ([...select.options].some((option) => option.value === value)) select.value = value;
+}
+
+// An interface has no decorators, accessors or renamed fields: those options are off.
+function syncOutput() {
+  const plain = el.output.value === 'interface';
+  for (const input of [el.observed, el.privateFields, el.camelCase]) {
+    input.disabled = plain;
+    input.closest('label').title = plain ? 'Not available for interfaces; use class output' : '';
+  }
 }
 
 // One file per class needs exports to import the classes from each other.
@@ -428,6 +441,7 @@ function start() {
     markStale();
     saveState();
   });
+  el.output.addEventListener('change', syncOutput);
   el.exportClasses.addEventListener('change', () => {
     if (!el.filePerClass.checked) exportChoice = el.exportClasses.checked;
   });

@@ -14,7 +14,7 @@ ArkTS 不允许使用 `any`、`unknown` 和无类型的对象字面量，因此�
 
 ## 功能
 
-- **ArkTS 模型类**：包含 `static fromJson()` 和 `toJson()`，支持任意层级的嵌套对象和列表。
+- **ArkTS 模型类**：包含 `static fromJson()` 和 `toJson()`，支持任意层级的嵌套对象和列表。如果只需要类型，也可以生成纯 **interface**（`JSON.parse(text) as Root`）。
 - **通过 ArkTS 严格模式**：不使用 `any` 或 `unknown`，所有对象字面量都声明为 `Record<string, Object>`，lambda 参数均有类型。每一种选项组合都经过 ArkTS linter 检查。
 - **状态管理**：`@Observed`（V1），或 `@ObservedV2` 配合 `@Trace`（V2，API 12+）。
 - **空值处理**：默认值、可选字段（`name?: string`）或可空字段（`name: string | null`）。
@@ -91,6 +91,7 @@ const list: Root[] = (JSON.parse(text) as Record<string, Object>[])
 | 选项 | 作用 |
 | --- | --- |
 | Class name | 顶层类的名称。 |
+| Output | **Class**：带 `fromJson` 和 `toJson` 的类。**Interface**：只有类型的 `export interface`，用法是 `JSON.parse(text) as Root`。interface 没有默认值、装饰器和方法，字段名就是 JSON 的键，因此状态管理、私有字段和 camelCase 选项会被关闭。 |
 | Missing and null fields | **Default values**：`name: string = ''`，缺失或为 null 的键保留默认值。**Optional**：`name?: string`，读取为 `undefined`。**Nullable**：`name: string \| null = null`，读取为 `null`。`toJson` 会省略值为 `undefined` 和 `null` 的字段。 |
 | State management | 每个类加上 **@Observed**（V1）；或每个类加 **@ObservedV2**、每个字段加 **@Trace**（V2，API 12+）。 |
 | Private fields with get/set | `private _name`，并生成 `get name()` 和 `set name()`。 |
@@ -115,7 +116,10 @@ const list: Root[] = (JSON.parse(text) as Record<string, Object>[])
 类型断言不会创建实例。得到的对象没有方法、没有默认值，也没有 `@Observed` 代理，因此 UI 不会响应它的变化。`fromJson` 会构建真正的类实例，嵌套对象和列表也一样。
 
 **生成的代码能通过 ArkTS 严格模式吗？**
-可以。`npm test` 使用 [`ohos-typescript`](https://www.npmjs.com/package/ohos-typescript)（DevEco Studio 编译 ArkTS 所用的 TypeScript 分支）及其 ArkTS linter，对 4 个样例文件的全部 108 种选项组合进行检查，并实际运行生成的类，确认 `toJson(fromJson(json))` 能还原出原始 JSON。
+可以。`npm test` 使用 [`ohos-typescript`](https://www.npmjs.com/package/ohos-typescript)（DevEco Studio 编译 ArkTS 所用的 TypeScript 分支）及其 ArkTS linter，对 4 个样例文件的全部 120 种选项组合（类 108 种，interface 12 种）进行检查，并实际运行生成的类，确认 `toJson(fromJson(json))` 能还原出原始 JSON。
+
+**用 class 还是 interface？**
+如果只是读取字段总是齐全的数据，用 interface 就够了。需要缺失键的默认值、`@Observed`/`@ObservedV2` 状态、字段重命名，或需要 `toJson` 回传数据时，用 class：interface 只在编译时检查，缺失的键在运行时会是 `undefined`。
 
 **用 `@Observed` 还是 `@ObservedV2`？**
 状态管理 V1 中使用 `@Observed` 配合 `@ObjectLink`。V2（API 12 及以上）请选择 `@ObservedV2`：每个字段都会加上 `@Trace`，嵌套对象的变化也能刷新 UI。
