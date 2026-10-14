@@ -6,7 +6,7 @@
 
 ### [打开 JSON to ArkTS →](https://ahmetkadircicek.github.io/json-to-arkts/)
 
-![JSON to ArkTS：粘贴 JSON，生成 ArkTS 类，切换到 @ObservedV2 并复制代码](docs/demo.gif)
+![JSON to ArkTS：粘贴 JSON，生成 ArkTS 类，切换到 @ObservedV2 或 interface 输出并复制代码](docs/demo.gif)
 
 如果 JSON to ArkTS 帮你节省了时间，欢迎点一个 ⭐，让更多鸿蒙开发者发现它。
 
