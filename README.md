@@ -6,7 +6,7 @@
 
 ### [Open JSON to ArkTS →](https://ahmetkadircicek.github.io/json-to-arkts/)
 
-![JSON to ArkTS: paste JSON, generate ArkTS classes, switch to @ObservedV2 and copy the code](docs/demo.gif)
+![JSON to ArkTS: paste JSON, generate ArkTS classes, switch to @ObservedV2 or interface output and copy the code](docs/demo.gif)
 
 If JSON to ArkTS saves you time, please give it a ⭐. It helps other HarmonyOS developers find it.
 
