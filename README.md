@@ -20,7 +20,7 @@ ArkTS does not allow `any`, `unknown` or untyped object literals, so every JSON 
 - **Null handling**: default values, optional fields (`name?: string`) or nullable fields (`name: string | null`).
 - **Private fields** with getters and setters, **camelCase** field names, **one file per class** with imports between them.
 - **Smart naming**: UpperCamelCase class names, singular list items (`categories` → `Category`), no names that clash with ArkUI components or decorators (`Image`, `List`, `Text`, `Link` …).
-- **Hints** for what a sample cannot tell: values that are always `null`, empty lists, mixed types, numbers too large for `number`.
+- **Hints** for what a sample cannot tell: values that are always `null`, empty lists, mixed types, numbers too large for `number`, strings that look like dates, strings that take only a few values (a union type or an enum could fit), and keys such as `constructor` that JavaScript objects already have.
 - JSON errors with line and column, Format, syntax highlighting, copy, `.ets` and `.zip` download, light and dark themes.
 - **Private**: the conversion happens in your browser; your JSON and code are never uploaded.
 
