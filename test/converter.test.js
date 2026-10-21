@@ -243,6 +243,12 @@ test('hints for unknown and lossy types', () => {
   assert.match(text, /\$\["2fa"\] is named _2fa in Root/);
 });
 
+test('keys that JavaScript objects already have show up as hints', () => {
+  const { warnings } = convertJson('{"constructor": 1, "toString": 2, "__proto__": 3, "name": 4}');
+  const hinted = warnings.filter((w) => /built-in name/.test(w.message)).map((w) => w.path);
+  assert.deepEqual(hinted, ['$.constructor', '$.toString', '$.__proto__']);
+});
+
 test('duplicate keys show up as hints', () => {
   const { warnings } = convertJson('{"a": 1, "a": 2}');
   assert.deepEqual(warnings, [{ path: 'line 1', message: 'Duplicate key "a"; the last value is used' }]);

@@ -136,6 +136,14 @@ class Notes {
 const ANY = { kind: 'any' };
 const EMPTY = { kind: 'empty' };
 
+// Names every JavaScript object already has: reading a missing key of one of these
+// returns the built-in, and assigning __proto__ changes the prototype instead of
+// adding a key.
+const BUILT_IN_KEYS = new Set([
+  '__proto__', '__defineGetter__', '__defineSetter__', '__lookupGetter__', '__lookupSetter__', 'constructor',
+  'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf',
+]);
+
 const childPath = (path, key) => (isIdentifier(key) ? `${path}.${key}` : `${path}[${JSON.stringify(key)}]`);
 
 function infer(node, path, notes) {
@@ -163,7 +171,12 @@ function infer(node, path, notes) {
     }
     default: {
       const fields = new Map();
-      for (const { key, value } of node.entries) fields.set(key, infer(value, childPath(path, key), notes));
+      for (const { key, value } of node.entries) {
+        if (BUILT_IN_KEYS.has(key)) {
+          notes.add(childPath(path, key), 'is also a built-in name of every JavaScript object, so a missing key may read that built-in and __proto__ is not written back; rename the key in your API if you can');
+        }
+        fields.set(key, infer(value, childPath(path, key), notes));
+      }
       return { kind: 'object', fields };
     }
   }
