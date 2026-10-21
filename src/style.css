@@ -15,7 +15,7 @@
   --danger: #c7000b;
   --danger-soft: #fdeceb;
   --code-bg: #fafafa;
-  --line-number: #a6a6a6;
+  --line-number: #6b6b6b;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 
   --tok-keyword: #c7000b;
@@ -51,7 +51,7 @@
     --danger: #ff6b6b;
     --danger-soft: rgba(255, 90, 90, 0.1);
     --code-bg: #0f0f0f;
-    --line-number: #5c5c5c;
+    --line-number: #8f8f8f;
     --shadow: none;
 
     --tok-keyword: #ff5a5a;
@@ -80,7 +80,7 @@
   --danger: #ff6b6b;
   --danger-soft: rgba(255, 90, 90, 0.1);
   --code-bg: #0f0f0f;
-  --line-number: #5c5c5c;
+  --line-number: #8f8f8f;
   --shadow: none;
 
   --tok-keyword: #ff5a5a;
