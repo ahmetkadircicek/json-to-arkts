@@ -155,6 +155,12 @@ npm test
 
 `.github/workflows/pages.yml` runs the tests on every push and pull request. On `main` it then replaces the `gh-pages` branch with the site files (`index.html`, `src/`, `favicon.svg`, `og.png`, `sitemap.xml` and the Google Search Console verification file), and GitHub Pages serves that branch.
 
+## Download and share
+
+Press **Download** to save the `.ets` file, or a `.zip` with one file per class when you chose one file per class. After the first copy or download, a small note asks for a star on GitHub; closing it, or following its link, hides it for good.
+
+![Pressing Download saves the code and a small note asks for a star on GitHub](docs/download.gif)
+
 ## Credits
 
 Made by [Ahmet Kadir Çiçek](https://github.com/ahmetkadircicek).

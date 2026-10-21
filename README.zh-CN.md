@@ -155,6 +155,12 @@ npm test
 
 `.github/workflows/pages.yml` 在每次 push 和 pull request 时运行测试。推送到 `main` 后，它会用站点文件（`index.html`、`src/`、`favicon.svg`、`og.png`、`sitemap.xml` 以及 Google Search Console 验证文件）替换 `gh-pages` 分支，由 GitHub Pages 提供访问。
 
+## 下载与分享
+
+点击 **Download** 即可保存 `.ets` 文件；如果选择了“每个类一个文件”，则下载一个 `.zip`。第一次复制或下载之后，会出现一条小提示，邀请你在 GitHub 上点一个 star；关闭它或点击其中的链接后，它不会再出现。
+
+![点击 Download 保存代码，并出现请求 GitHub star 的小提示](docs/download.gif)
+
 ## 致谢
 
 作者 [Ahmet Kadir Çiçek](https://github.com/ahmetkadircicek)。
