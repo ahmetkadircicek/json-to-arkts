@@ -187,6 +187,8 @@ test('class names: UpperCamelCase, singular list items, built-in names get the p
   ]);
   // A key that is no identifier, and classes named like their parents.
   assert.deepEqual(names({ 123: { a: 1 }, data: { data: { b: 1 } } }, { className: 'Data' }), ['Data', 'Data123', 'DataData', 'DataDataData']);
+  // The parent name in front must not make a built-in name either (ThisType is a TypeScript utility type).
+  assert.deepEqual(names({ this: { type: { a: 1 } } }), ['Root', 'This', 'ThisType2']);
   // Taken by another shape twice: a number after the parent name.
   assert.deepEqual(names({ aX: { q: 1 }, x: { p: 1 }, a: { x: { r: 1 } } }), ['Root', 'AX', 'X', 'A', 'AX2']);
 });

@@ -293,7 +293,9 @@ class ClassBuilder {
     if (isIdentifier(candidate) && !isReservedClassName(candidate)) tries.push(candidate);
     tries.push(parentName + (candidate || 'Item'));
 
+    // The parent name in front can itself make a built-in name: "This" and "Type" give ThisType.
     for (const name of tries) {
+      if (isReservedClassName(name)) continue;
       const existing = this.byName.get(name);
       if (!existing) return this.makeClass(shape, name, path);
       if (existing.signature === sig) return existing;
