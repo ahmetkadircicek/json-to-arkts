@@ -146,9 +146,25 @@ const BUILT_IN_KEYS = new Set([
 
 const childPath = (path, key) => (isIdentifier(key) ? `${path}.${key}` : `${path}[${JSON.stringify(key)}]`);
 
+// A date, or a date with a time and an optional zone: 2026-10-21, 2026-10-21T12:30:00Z.
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/;
+const MAX_VALUES = 6;
+
+// What strings were seen at a position, to hint at dates and enums: how many,
+// whether every one looks like a date, and the distinct values up to a few.
+function stringShape(value) {
+  return { kind: 'string', count: 1, dates: ISO_DATE.test(value), values: new Set([value]) };
+}
+
+function mergeStrings(a, b) {
+  const values = a.values && b.values ? new Set([...a.values, ...b.values]) : null;
+  return { kind: 'string', count: a.count + b.count, dates: a.dates && b.dates, values: values && values.size <= MAX_VALUES ? values : null };
+}
+
 function infer(node, path, notes) {
   switch (node.type) {
     case 'string':
+      return stringShape(node.value);
     case 'boolean':
     case 'null':
       return { kind: node.type };
@@ -195,6 +211,7 @@ function merge(a, b, path, notes) {
     notes.add(path, `mixes ${describe(a)} and ${describe(b)}, so it is typed as Object`);
     return ANY;
   }
+  if (a.kind === 'string') return mergeStrings(a, b);
   if (a.kind === 'array') return { kind: 'array', element: merge(a.element, b.element, `${path}[]`, notes) };
   if (a.kind === 'object') {
     const fields = new Map(a.fields);
@@ -264,6 +281,8 @@ class ClassBuilder {
   typeOf(shape, key, parentName, path, inList) {
     switch (shape.kind) {
       case 'string':
+        this.hintString(shape, path.replace(/(\[\])+$/, ''));
+        return { kind: 'string' };
       case 'number':
       case 'boolean':
         return { kind: shape.kind };
@@ -279,6 +298,16 @@ class ClassBuilder {
         return { kind: 'array', element: this.typeOf(shape.element, key, parentName, `${path}[]`, true) };
       default:
         return { kind: 'class', cls: this.classFor(shape, key, parentName, path, inList) };
+    }
+  }
+
+  // The type stays string; the hint says what a better one could be.
+  hintString(shape, path) {
+    if (shape.dates) {
+      this.notes.add(path, 'looks like a date or a date and time. It stays a string; use new Date(value) when you need a Date');
+    } else if (shape.values && shape.values.size >= 2 && shape.count >= 2 * shape.values.size && [...shape.values].every((v) => v.length <= 24)) {
+      const list = [...shape.values].map((v) => JSON.stringify(v)).join(', ');
+      this.notes.add(path, `is always one of ${list} in ${shape.count} samples; a union type or an enum could fit`);
     }
   }
 

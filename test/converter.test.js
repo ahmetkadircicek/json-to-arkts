@@ -245,6 +245,24 @@ test('hints for unknown and lossy types', () => {
   assert.match(text, /\$\["2fa"\] is named _2fa in Root/);
 });
 
+test('hints for dates and for strings that take a few values', () => {
+  const hints = (json) => convertJson(JSON.stringify(json)).warnings.map((w) => `${w.path} ${w.message}`);
+  const dates = hints({ created: '2026-10-21T12:30:00Z', day: '2026-10-21', note: 'text', updated: '2026-10-21 08:00' });
+  assert.ok(dates.some((h) => /^\$\.created looks like a date/.test(h)));
+  assert.ok(dates.some((h) => /^\$\.day looks like a date/.test(h)));
+  assert.ok(dates.some((h) => /^\$\.updated looks like a date/.test(h)));
+  assert.ok(!dates.some((h) => /^\$\.note/.test(h)));
+
+  const items = ['new', 'paid', 'new', 'shipped', 'paid', 'new', 'paid', 'new'].map((status, id) => ({ id, status, name: `n${id}` }));
+  const list = hints({ orders: items });
+  assert.ok(list.some((h) => h === '$.orders[].status is always one of "new", "paid", "shipped" in 8 samples; a union type or an enum could fit'), list.join('\n'));
+  assert.ok(!list.some((h) => /orders\[\]\.name/.test(h)), 'distinct values are not an enum');
+  // Too few samples, a mix of dates and text, and too many values: no hint.
+  assert.deepEqual(hints({ orders: items.slice(0, 3) }), []);
+  assert.deepEqual(hints({ items: [{ d: '2026-10-21' }, { d: 'soon' }] }), []);
+  assert.deepEqual(hints({ items: Array.from({ length: 20 }, (_, i) => ({ k: `v${i % 8}` })) }), []);
+});
+
 test('keys that JavaScript objects already have show up as hints', () => {
   const { warnings } = convertJson('{"constructor": 1, "toString": 2, "__proto__": 3, "name": 4}');
   const hinted = warnings.filter((w) => /built-in name/.test(w.message)).map((w) => w.path);
