@@ -88,7 +88,7 @@ export function singularize(name) {
 function singularWord(word) {
   const lower = word.toLowerCase();
   if (UNCOUNTABLE.has(lower)) return word;
-  const irregular = IRREGULAR[lower];
+  const irregular = Object.hasOwn(IRREGULAR, lower) ? IRREGULAR[lower] : undefined;
   if (irregular) return word[0] === lower[0] ? irregular : irregular[0].toUpperCase() + irregular.slice(1);
   if (/[^aeiou]ies$/.test(lower)) return `${word.slice(0, -3)}y`;
   if (/(?:ss|x|ch|sh|zz)es$/.test(lower)) return word.slice(0, -2);

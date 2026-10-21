@@ -296,6 +296,9 @@ test('name helpers', () => {
     Item: 'Item',
   };
   for (const [plural, singular] of Object.entries(plurals)) assert.equal(singularize(plural), singular, plural);
+  // Names every object already has must not hit the table's own members.
+  for (const name of ['Constructor', 'ToString', 'ValueOf', 'HasOwnProperty', '__proto__']) assert.doesNotThrow(() => singularize(name), name);
+  assert.deepEqual(convertJson('{"constructor": [{"a": 1}]}').classNames, ['Root', 'Constructor']);
 });
 
 test('interface output: types only, fields are the JSON keys', () => {
