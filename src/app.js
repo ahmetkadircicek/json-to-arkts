@@ -154,9 +154,24 @@ function renderGutter(force = false) {
   const lines = el.json.value.split('\n').length;
   if (!force && lines === gutterLines) return;
   gutterLines = lines;
-  let html = '';
-  for (let i = 1; i <= lines; i++) html += i === errorLine ? `<span class="error-line">${i}</span>` : `<span>${i}</span>`;
-  el.gutter.innerHTML = html;
+  // The numbers are one text node, with a single element for the error line:
+  // an element per line made 480 000 lines take 25 seconds.
+  const numbers = (from, to) => {
+    const out = new Array(Math.max(0, to - from + 1));
+    for (let i = from; i <= to; i++) out[i - from] = i;
+    return out.join('\n');
+  };
+  const nodes = [];
+  if (errorLine >= 1 && errorLine <= lines) {
+    nodes.push(document.createTextNode(numbers(1, errorLine - 1)));
+    const mark = document.createElement('span');
+    mark.className = 'error-line';
+    mark.textContent = String(errorLine);
+    nodes.push(mark, document.createTextNode(numbers(errorLine + 1, lines)));
+  } else {
+    nodes.push(document.createTextNode(numbers(1, lines)));
+  }
+  el.gutter.replaceChildren(...nodes);
   el.gutter.scrollTop = el.json.scrollTop;
 }
 

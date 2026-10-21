@@ -375,7 +375,8 @@ h2 {
 .gutter {
   flex: none;
   min-width: 48px;
-  padding: 12px 10px 12px 0;
+  padding: 12px 10px 12px 12px;
+  white-space: pre;
   overflow: hidden;
   border-right: 1px solid var(--border);
   color: var(--line-number);
@@ -384,12 +385,10 @@ h2 {
   user-select: none;
 }
 
-.gutter span {
-  display: block;
-  padding-left: 12px;
-}
-
 .gutter .error-line {
+  display: block;
+  margin: 0 -10px 0 -12px;
+  padding: 0 10px 0 12px;
   background: var(--danger-soft);
   color: var(--danger);
   font-weight: 600;
