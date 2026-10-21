@@ -426,8 +426,6 @@ function start() {
   renderGutter(true);
   syncThemeButton();
 
-  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) $('mod-key').textContent = '⌘';
-
   el.json.addEventListener('input', onJsonInput);
   el.json.addEventListener('scroll', () => {
     el.gutter.scrollTop = el.json.scrollTop;
@@ -450,12 +448,18 @@ function start() {
     markStale();
   });
 
-  document.addEventListener('keydown', (event) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-      event.preventDefault();
-      generate();
-    }
-  });
+  // Ctrl or Cmd with Enter also generates, whichever Enter key sends it.
+  window.addEventListener(
+    'keydown',
+    (event) => {
+      const enter = event.key === 'Enter' || event.code === 'Enter' || event.code === 'NumpadEnter' || event.keyCode === 13;
+      if ((event.ctrlKey || event.metaKey) && enter && !event.isComposing) {
+        event.preventDefault();
+        generate();
+      }
+    },
+    true,
+  );
 
   el.tabs.addEventListener('keydown', (event) => {
     const count = result?.files.length ?? 0;

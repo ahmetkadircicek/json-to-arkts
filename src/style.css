@@ -120,7 +120,6 @@ a {
 }
 
 code,
-kbd,
 pre,
 textarea {
   font-family: var(--mono);
@@ -533,20 +532,6 @@ h2 {
   gap: 12px;
 }
 
-.hint {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-kbd {
-  padding: 1px 6px;
-  border: 1px solid var(--border-strong);
-  border-bottom-width: 2px;
-  border-radius: 5px;
-  background: var(--surface-2);
-  font-size: 11px;
-}
-
 /* Output ------------------------------------------------------------------- */
 
 .star-prompt {
@@ -956,10 +941,6 @@ kbd {
 
   .generate-row .primary {
     flex: 1;
-  }
-
-  .hint {
-    display: none;
   }
 
   .star-prompt {
