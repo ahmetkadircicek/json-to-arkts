@@ -160,12 +160,20 @@ function renderGutter(force = false) {
   el.gutter.scrollTop = el.json.scrollTop;
 }
 
-// Replaces the editor text through the browser's editing commands so undo still works.
+// Text up to this many characters goes through the browser's editing commands, so
+// undo still works. Their cost grows with the square of the length (about 1.7 s at
+// 12 000 characters), so longer text is assigned directly and cannot be undone.
+const UNDO_LIMIT = 4000;
+
 function replaceJson(text) {
   el.json.focus();
-  el.json.select();
-  const ok = text ? document.execCommand('insertText', false, text) : document.execCommand('delete');
-  if (!ok || el.json.value !== text) el.json.value = text;
+  const undoable = text.length <= UNDO_LIMIT && el.json.value.length <= UNDO_LIMIT;
+  let done = false;
+  if (undoable) {
+    el.json.select();
+    done = text ? document.execCommand('insertText', false, text) : document.execCommand('delete');
+  }
+  if (!done || el.json.value !== text) el.json.value = text;
   el.json.setSelectionRange(0, 0);
   el.json.scrollTop = 0;
   onJsonInput();
@@ -184,6 +192,7 @@ function showError(message, error) {
   if (error) {
     el.errorWhere.textContent = `Line ${error.line}, column ${error.column}`;
     el.errorWhere.onclick = () => jumpTo(error);
+  return undoable;
     errorLine = error.line;
   } else {
     el.errorWhere.textContent = '';
@@ -215,8 +224,8 @@ function jumpTo(error) {
 function formatInput() {
   try {
     const { value } = parseJson(el.json.value);
-    replaceJson(`${formatJson(value)}\n`);
-    announce('JSON formatted');
+    const undoable = replaceJson(`${formatJson(value)}\n`);
+    announce(undoable ? 'JSON formatted' : 'JSON formatted. This one is too long to undo.');
   } catch (error) {
     if (!(error instanceof JsonParseError)) throw error;
     showError(error.message, error);
