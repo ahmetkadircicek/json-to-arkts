@@ -827,8 +827,8 @@ h2 {
   color: var(--muted);
 }
 
-.faq-title {
-  margin: 48px 0 16px;
+.about > .faq-title {
+  margin: 56px 0 16px;
   font-size: 20px;
 }
 
