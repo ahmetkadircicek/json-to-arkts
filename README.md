@@ -1,3 +1,5 @@
+![JSON to ArkTS](docs/cover.png)
+
 # JSON to ArkTS
 
 **English** | [简体中文](README.zh-CN.md)
